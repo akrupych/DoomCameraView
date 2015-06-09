@@ -11,7 +11,7 @@ import android.view.View.OnTouchListener;
  * Reacts on swipe gestures.
  * Got <a href="http://stackoverflow.com/a/12938787/1822481">here</a> and slightly edited.
  */
-public class OnSwipeTouchListener implements OnTouchListener {
+public abstract class OnSwipeTouchListener implements OnTouchListener {
 
     public enum SwipeDirection {
         TOP,
@@ -67,6 +67,5 @@ public class OnSwipeTouchListener implements OnTouchListener {
         }
     }
 
-    public void onSwipe(SwipeDirection direction) {
-    }
+    public abstract void onSwipe(SwipeDirection direction);
 }
