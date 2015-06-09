@@ -9,9 +9,16 @@ import android.view.View.OnTouchListener;
 
 /**
  * Reacts on swipe gestures.
- * Got <a href="http://stackoverflow.com/a/12938787/1822481">here</a>
+ * Got <a href="http://stackoverflow.com/a/12938787/1822481">here</a> and slightly edited.
  */
 public class OnSwipeTouchListener implements OnTouchListener {
+
+    public enum SwipeDirection {
+        TOP,
+        LEFT,
+        RIGHT,
+        BOTTOM
+    }
 
     private final GestureDetector gestureDetector;
 
@@ -42,20 +49,14 @@ public class OnSwipeTouchListener implements OnTouchListener {
                 float diffX = e2.getX() - e1.getX();
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffX > 0) {
-                            onSwipeRight();
-                        } else {
-                            onSwipeLeft();
-                        }
+                        if (diffX > 0) onSwipe(SwipeDirection.RIGHT);
+                        else onSwipe(SwipeDirection.LEFT);
                     }
                     result = true;
                 }
                 else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffY > 0) {
-                        onSwipeBottom();
-                    } else {
-                        onSwipeTop();
-                    }
+                    if (diffY > 0) onSwipe(SwipeDirection.BOTTOM);
+                    else onSwipe(SwipeDirection.TOP);
                 }
                 result = true;
 
@@ -66,15 +67,6 @@ public class OnSwipeTouchListener implements OnTouchListener {
         }
     }
 
-    public void onSwipeRight() {
-    }
-
-    public void onSwipeLeft() {
-    }
-
-    public void onSwipeTop() {
-    }
-
-    public void onSwipeBottom() {
+    public void onSwipe(SwipeDirection direction) {
     }
 }
