@@ -76,4 +76,8 @@ public class MovementController {
     public String toString() {
         return String.format("%s (%d;%d)", mDirection.toString(), mLocation.x, mLocation.y);
     }
+
+    public Direction getDirection() {
+        return mDirection;
+    }
 }

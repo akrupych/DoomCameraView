@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainFragment extends Fragment {
@@ -14,7 +17,9 @@ public class MainFragment extends Fragment {
     private static final String TAG = MainFragment.class.getSimpleName();
 
     private MovementController mController = new MovementController();
+    private CompassAnimator mCompassAnimator = new CompassAnimator();
 
+    private ImageView mCompassView;
     private TextView mTextView;
 
     @Override
@@ -34,6 +39,8 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "onViewCreated");
+        mCompassView = (ImageView) view.findViewById(R.id.compass);
+        mCompassAnimator.setup(mCompassView, mController);
         mTextView = (TextView) view.findViewById(R.id.text_view);
         view.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
             @Override
@@ -42,8 +49,14 @@ public class MainFragment extends Fragment {
                 switch (direction) {
                     case BOTTOM: mController.goForward(); break;
                     case TOP: mController.goBackward(); break;
-                    case LEFT: mController.turnRight(); break;
-                    case RIGHT: mController.turnLeft(); break;
+                    case LEFT:
+                        mController.turnRight();
+                        mCompassAnimator.rotateRight(mCompassView);
+                        break;
+                    case RIGHT:
+                        mController.turnLeft();
+                        mCompassAnimator.rotateLeft(mCompassView);
+                        break;
                 }
                 updateView();
             }
