@@ -1,14 +1,36 @@
 package akrupych.doomcameraview;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.util.Log;
 
 /**
  * Encapsulates direction and movement in space.
  */
 public class MovementController {
 
-    private Direction mDirection = Direction.NORTH;
-    private Point mLocation = new Point();
+    private static final String TAG = MovementController.class.getSimpleName();
+    private static final String KEY_DIRECTION = "KEY_DIRECTION";
+    private static final String KEY_X = "KEY_X";
+    private static final String KEY_Y = "KEY_Y";
+
+    private SharedPreferences mSource;
+    private Direction mDirection;
+    private Point mLocation;
+
+    public MovementController() {
+        mSource = App.getInstance().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        mDirection = Direction.valueOf(mSource.getString(KEY_DIRECTION, Direction.NORTH.toString()));
+        mLocation = new Point(mSource.getInt(KEY_X, 0), mSource.getInt(KEY_Y, 0));
+        Log.d(TAG, "loaded " + toString());
+    }
+
+    private void save() {
+        mSource.edit().putString(KEY_DIRECTION, mDirection.toString())
+                .putInt(KEY_X, mLocation.x).putInt(KEY_Y, mLocation.y).apply();
+        Log.d(TAG, "saved " + toString());
+    }
 
     public void goForward() {
         switch (mDirection) {
@@ -17,6 +39,7 @@ public class MovementController {
             case SOUTH: mLocation.y--; break;
             case WEST: mLocation.x--; break;
         }
+        save();
     }
 
     public void goBackward() {
@@ -26,6 +49,7 @@ public class MovementController {
             case SOUTH: mLocation.y++; break;
             case WEST: mLocation.x++; break;
         }
+        save();
     }
 
     public void turnLeft() {
@@ -35,6 +59,7 @@ public class MovementController {
             case SOUTH: mDirection = Direction.EAST; break;
             case WEST: mDirection = Direction.SOUTH; break;
         }
+        save();
     }
 
     public void turnRight() {
@@ -44,6 +69,7 @@ public class MovementController {
             case SOUTH: mDirection = Direction.WEST; break;
             case WEST: mDirection = Direction.NORTH; break;
         }
+        save();
     }
 
     @Override
