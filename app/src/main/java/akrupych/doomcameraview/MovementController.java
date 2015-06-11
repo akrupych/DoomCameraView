@@ -80,4 +80,12 @@ public class MovementController {
     public Direction getDirection() {
         return mDirection;
     }
+
+    public Point getLocation() {
+        return mLocation;
+    }
+
+    public String getLocationString() {
+        return mLocation.x + ":" + mLocation.y;
+    }
 }
